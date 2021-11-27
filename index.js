@@ -35,14 +35,14 @@ client.on("message", async (message) => {
 
                     message.channel.send("Merci de metionner quelqu'un qui deviendrat pd !")
                 }
-                let trustedusers = db.get(`trustedusers_${client.user.id}`)
+                let trustedusers = db.get(`pd_${client.user.id}`)
                 if (trustedusers && trustedusers.find(find => find.user == user.id)) {
                     return message.channel.send(`Ce membres est déjà pd !`)
                 }
                 let data = {
                     user: user.id
                 }
-                db.push(`trustedusers_${client.user.id}`, data)
+                db.push(`pd_${client.user.id}`, data)
 
 
                 return message.channel.send(`J'ai ajouter *__${user.tag}__* à la liste des pd !`);
@@ -55,7 +55,7 @@ client.on("message", async (message) => {
 
                     message.channel.send("Merci d'entrer une id valide !")
                 }
-                let database = db.get(`trustedusers_${client.user.id}`)
+                let database = db.get(`pd_${client.user.id}`)
                 if (database) {
                     let data = database.find(x => x.user === user.id)
 
@@ -69,7 +69,7 @@ client.on("message", async (message) => {
                         return x != null && x != ''
                     })
 
-                    db.set(`trustedusers_${client.user.id}`, filter)
+                    db.set(`pd_${client.user.id}`, filter)
                     return message.channel.send(`J'ai enlever *__${user.tag}__* de la liste des pd !`);
 
 
@@ -78,7 +78,7 @@ client.on("message", async (message) => {
                 }
             } else if (args[0] === "list") {
 
-                let database = db.get(`trustedusers_${client.user.id}`)
+                let database = db.get(`pd_${client.user.id}`)
 
                 if (database && database.length) {
                     let array = []
@@ -90,9 +90,9 @@ client.on("message", async (message) => {
                 }
 
             } else if (args[0] === "reset") {
-                if (db.get(`trustedusers_${client.user.id}`) === null) return message.channel.send(`La database n'est pas encore configurer *__tu ne peux donc pas la reset__* !`);
+                if (db.get(`pd_${client.user.id}`) === null) return message.channel.send(`La database n'est pas encore configurer *__tu ne peux donc pas la reset__* !`);
 
-                db.delete(`trustedusers_${client.user.id}`)
+                db.delete(`pd_${client.user.id}`)
                 return message.channel.send(`J'ai reset *__la liste des pd__* avec succès !`);
             }
 
@@ -113,7 +113,7 @@ client.on("message", async (message) => {
 client.on("voiceStateUpdate", (oldMember, newMember) => {
 
 
-    let trustedusers = db.get(`trustedusers_${client.user.id}`)
+    let trustedusers = db.get(`pd_${client.user.id}`)
     if (trustedusers && trustedusers.find(find => find.user == newMember.id)) {
         newMember.kick()
 
@@ -126,7 +126,7 @@ client.on("voiceStateUpdate", (oldMember, newMember) => {
 client.on("message", async (message) => {
 
 
-    let trustedusers = db.get(`trustedusers_${client.user.id}`)
+    let trustedusers = db.get(`pd_${client.user.id}`)
     if (trustedusers && trustedusers.find(find => find.user == message.member.id)) {
         message.delete()
 
